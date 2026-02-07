@@ -1,0 +1,128 @@
+/* ===== VARIABLES GLOBALES ===== */
+:root {
+  --primary: #2e7d32;
+  --secondary: #81c784;
+  --dark: #1b5e20;
+  --light: #f4f6f8;
+  --card: #ffffff;
+  --text: #333;
+}
+
+/* ===== RESET BÁSICO ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===== BODY ===== */
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background-color: var(--light);
+  color: var(--text);
+}
+
+/* ===== INPUTS ===== */
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+/* ===== BOTONES ===== */
+button {
+  background-color: var(--primary);
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: var(--dark);
+}
+
+/* ===== CONTENEDORES ===== */
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===== CARD ===== */
+.card {
+  background-color: var(--card);
+  padding: 30px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* ===== FONDOS LOGIN Y REGISTER ===== */
+.auth-bg {
+  min-height: 100vh;
+  background-image: linear-gradient(
+      rgba(0, 0, 0, 0.45),
+      rgba(0, 0, 0, 0.45)
+    ),
+    url("/src/assets/login-bg.jpeg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===== ANIMACIONES ===== */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-card {
+  animation: fadeSlideUp 0.6s ease-out;
+}
+
+/* ===== RESPONSIVE LOGIN & REGISTER ===== */
+@media (max-width: 480px) {
+  .card {
+    max-width: 100%;
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  input {
+    font-size: 15px;
+    padding: 12px;
+  }
+
+  button {
+    font-size: 15px;
+    padding: 12px;
+  }
+}
+

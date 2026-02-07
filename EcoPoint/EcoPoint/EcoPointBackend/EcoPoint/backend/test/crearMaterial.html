@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Material - EcoPoint</title>
+</head>
+<body>
+  <h2>Crear Material</h2>
+
+  <button onclick="crearMaterial()">Crear material</button>
+
+  <pre id="resultado"></pre>
+
+  <script>
+    function crearMaterial() {
+      fetch("http://localhost:5000/api/materiales/crear", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          nombre: "Plástico",
+          puntosPorKg: 10
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("resultado").textContent =
+          JSON.stringify(data, null, 2);
+      });
+    }
+  </script>
+</body>
+</html>

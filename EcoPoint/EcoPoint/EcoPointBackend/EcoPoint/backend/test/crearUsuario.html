@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Usuario - EcoPoint</title>
+</head>
+<body>
+  <h2>Crear Usuario</h2>
+
+  <button onclick="crearUsuario()">Crear usuario de prueba</button>
+
+  <pre id="resultado"></pre>
+
+  <script>
+    function crearUsuario() {
+      fetch("http://localhost:5000/api/usuarios/crear", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          cedula: "123456789",
+          nombre: "Usuario Local"
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("resultado").textContent =
+          JSON.stringify(data, null, 2);
+      })
+      .catch(err => {
+        document.getElementById("resultado").textContent = err;
+      });
+    }
+  </script>
+</body>
+</html>
