@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registrar Reciclaje</title>
+</head>
+<body>
+  <h2>Registrar Reciclaje</h2>
+
+  <button onclick="registrar()">Registrar reciclaje</button>
+
+  <pre id="resultado"></pre>
+
+  <script>
+    function registrar() {
+      fetch("http://localhost:5000/api/reciclaje/registrar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          cedula: "123456789",
+          materialId: "695f1283e3c4e9eccb376d69",
+          peso: 2
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("resultado").textContent =
+          JSON.stringify(data, null, 2);
+      });
+    }
+  </script>
+</body>
+</html>

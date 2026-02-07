@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Premio</title>
+</head>
+<body>
+  <h2>Crear Premio</h2>
+
+  <button onclick="crearPremio()">Crear premio</button>
+
+  <pre id="resultado"></pre>
+
+  <script>
+    function crearPremio() {
+      fetch("http://localhost:5000/api/premios/crear", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          nombre: "Botella reutilizable",
+          descripcion: "Botella ecológica",
+          puntosRequeridos: 50,
+          stock: 10
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("resultado").textContent =
+          JSON.stringify(data, null, 2);
+      });
+    }
+  </script>
+</body>
+</html>

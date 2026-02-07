@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Canjear Premio</title>
+</head>
+<body>
+  <h2>Canjear Premio</h2>
+
+  <button onclick="canjear()">Canjear premio</button>
+
+  <pre id="resultado"></pre>
+
+  <script>
+    function canjear() {
+      fetch("http://localhost:5000/api/premios/canjear", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          cedula: "123456789",
+          premioId: "695f17920307ea4055a52f05"
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("resultado").textContent =
+          JSON.stringify(data, null, 2);
+      });
+    }
+  </script>
+</body>
+</html>
