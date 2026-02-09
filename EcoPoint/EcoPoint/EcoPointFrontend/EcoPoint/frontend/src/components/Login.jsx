@@ -12,7 +12,7 @@ function Login({ onLogin, onRegister }) {
       return;
     }
 
-    fetch("http://localhost:5000/api/usuarios/login", {
+    fetch("http://localhost:5050/api/usuarios/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

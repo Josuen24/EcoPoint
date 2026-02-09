@@ -9,7 +9,7 @@ function RecolectorView({ usuario, logout }) {
 
   // Cargar materiales al iniciar
   useEffect(() => {
-    fetch("http://localhost:5000/api/materiales")
+    fetch("http://localhost:5050/api/materiales")
       .then(res => res.json())
       .then(data => setMateriales(data));
   }, []);
@@ -20,7 +20,7 @@ function RecolectorView({ usuario, logout }) {
       return;
     }
 
-    fetch("http://localhost:5000/api/reciclaje/registrar", {
+    fetch("http://localhost:5050/api/reciclaje/registrar", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

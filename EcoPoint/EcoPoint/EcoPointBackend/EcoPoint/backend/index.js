@@ -5,6 +5,9 @@ const path = require("path");
 
 require("dotenv").config();
 
+// Importar módulo de auditoría
+const { setupAuditoriaRoutes } = require("./database-auditoria");
+
 const app = express();
 
 // Middlewares
@@ -30,6 +33,9 @@ app.use("/api/reciclaje", reciclajeRoutes);
 const premioRoutes = require("./routes/premio.routes");
 app.use("/api/premios", premioRoutes);
 
+// Configurar rutas de auditoría
+setupAuditoriaRoutes(app);
+
 // Conexión a MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
@@ -37,8 +43,7 @@ mongoose
   .catch((error) => console.log(error));
 
 // Servidor
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5050;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en puerto ${PORT}`);
 });
-

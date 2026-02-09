@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const Material = require("../models/Material");
+const { registrarAuditoria } = require("../database-auditoria");
 
 // Registrar reciclaje
 router.post("/registrar", async (req, res) => {
@@ -36,6 +37,22 @@ router.post("/registrar", async (req, res) => {
     });
 
     await usuario.save();
+
+    // Registrar reciclaje en auditoría
+    await registrarAuditoria({
+      id_usuario: cedula,
+      nombre_usuario: usuario.nombre,
+      operacion: "UPDATE",
+      tabla_afectada: "users",
+      registro_id: cedula,
+      descripcion: `Reciclaje registrado: ${peso}kg de ${material.nombre}`,
+      datos_nuevos: { 
+        material: material.nombre, 
+        peso, 
+        puntos: puntosGanados,
+        puntosTotales: usuario.puntos 
+      }
+    });
 
     res.json({
       message: "Reciclaje registrado correctamente",
