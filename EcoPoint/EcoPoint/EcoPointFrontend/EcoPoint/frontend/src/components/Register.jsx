@@ -14,7 +14,7 @@ function Register({ onBack }) {
       return;
     }
 
-    fetch("http://localhost:5000/api/usuarios/register", {
+    fetch("http://localhost:5050/api/usuarios/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

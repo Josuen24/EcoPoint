@@ -8,7 +8,7 @@ function UsuarioView({ usuario, logout }) {
 
   // Cargar premios disponibles
   useEffect(() => {
-    fetch("http://localhost:5000/api/premios")
+    fetch("http://localhost:5050/api/premios")
       .then(res => res.json())
       .then(data => setPremios(data));
   }, []);
@@ -19,7 +19,7 @@ function UsuarioView({ usuario, logout }) {
       return;
     }
 
-    fetch("http://localhost:5000/api/premios/canjear", {
+    fetch("http://localhost:5050/api/premios/canjear", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -100,7 +100,7 @@ function UsuarioView({ usuario, logout }) {
               <span>{p.nombre}</span>
                 {p.imagen && (
                   <img
-                    src={`http://localhost:5000${p.imagen}`}
+                    src={`http://localhost:5050${p.imagen}`}
                     alt={p.nombre}
                     className="premio-img"
                   />

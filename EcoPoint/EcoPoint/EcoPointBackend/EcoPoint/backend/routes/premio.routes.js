@@ -3,6 +3,7 @@ const router = express.Router();
 const Premio = require("../models/Premio");
 const User = require("../models/User");
 const uploadPremio = require("../middlewares/uploadPremio");
+const { registrarAuditoria } = require("../database-auditoria");
 
 
 // Crear premio (admin)
@@ -29,6 +30,17 @@ router.post(
       });
 
       await premio.save();
+
+      // Registrar creación de premio en auditoría
+      await registrarAuditoria({
+        id_usuario: "admin",
+        nombre_usuario: "Administrador",
+        operacion: "INSERT",
+        tabla_afectada: "premios",
+        registro_id: premio._id,
+        descripcion: `Nuevo premio creado: ${nombre}`,
+        datos_nuevos: { nombre, descripcion, puntosRequeridos, stock }
+      });
 
       res.status(201).json({
         message: "Premio creado correctamente",
@@ -86,6 +98,21 @@ router.post("/canjear", async (req, res) => {
 
     await usuario.save();
     await premio.save();
+
+    // Registrar canje de premio en auditoría
+    await registrarAuditoria({
+      id_usuario: cedula,
+      nombre_usuario: usuario.nombre,
+      operacion: "UPDATE",
+      tabla_afectada: "users",
+      registro_id: cedula,
+      descripcion: `Premio canjeado: ${premio.nombre}`,
+      datos_nuevos: { 
+        premio: premio.nombre, 
+        puntosRequeridos: premio.puntosRequeridos,
+        puntosRestantes: usuario.puntos 
+      }
+    });
 
     res.json({
       message: "Premio canjeado correctamente",

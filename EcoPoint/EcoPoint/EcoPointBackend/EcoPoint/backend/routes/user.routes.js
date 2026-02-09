@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const { registrarAuditoria } = require("../database-auditoria");
 
 
 // Crear usuario
@@ -81,6 +82,17 @@ router.post("/register", async (req, res) => {
 
     await nuevoUsuario.save();
 
+    // Registrar en auditoría
+    await registrarAuditoria({
+      id_usuario: cedula,
+      nombre_usuario: nombre,
+      operacion: "INSERT",
+      tabla_afectada: "users",
+      registro_id: cedula,
+      descripcion: "Nuevo usuario registrado",
+      datos_nuevos: { cedula, nombre, email, rol: "usuario" }
+    });
+
     res.status(201).json({ message: "Usuario registrado correctamente" });
   } catch (error) {
     res.status(500).json({ message: "Error del servidor" });
@@ -102,6 +114,17 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Contraseña incorrecta" });
     }
 
+    // Registrar login en auditoría
+    await registrarAuditoria({
+      id_usuario: cedula,
+      nombre_usuario: usuario.nombre,
+      operacion: "LOGIN",
+      tabla_afectada: "users",
+      registro_id: cedula,
+      descripcion: "Inicio de sesión",
+      ip_address: req.ip
+    });
+
     res.json(usuario);
   } catch (error) {
     res.status(500).json({ message: "Error del servidor" });
@@ -118,15 +141,30 @@ router.put("/cambiar-rol", async (req, res) => {
       return res.status(400).json({ message: "Rol inválido" });
     }
 
+    // Obtener usuario ANTES de actualizar para capturar el nombre y rol anterior
+    const usuarioAnterior = await User.findOne({ cedula });
+    if (!usuarioAnterior) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    // Actualizar rol
     const usuario = await User.findOneAndUpdate(
       { cedula },
       { rol },
       { new: true }
     );
 
-    if (!usuario) {
-      return res.status(404).json({ message: "Usuario no encontrado" });
-    }
+    // Registrar cambio de rol en auditoría
+    await registrarAuditoria({
+      id_usuario: cedula,
+      nombre_usuario: usuarioAnterior.nombre,
+      operacion: "UPDATE",
+      tabla_afectada: "users",
+      registro_id: cedula,
+      descripcion: `Cambio de rol a: ${rol}`,
+      datos_anteriores: { rol: usuarioAnterior.rol },
+      datos_nuevos: { rol: rol }
+    });
 
     res.json({ message: "Rol actualizado", usuario });
   } catch (error) {
